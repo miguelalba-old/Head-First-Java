@@ -7,6 +7,11 @@ public class MyRunnable implements Runnable {
 	}
 
 	public void go() {
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException ex) {
+			ex.printStackTrace();
+		}
 		doMore();
 	}
 
@@ -15,8 +20,9 @@ public class MyRunnable implements Runnable {
 	}
 
 	public static void main(String[] args) {
-		Thread myThread = new Thread(new MyRunnable());
-		myThread.start();
+		Runnable theJob = new MyRunnable();
+		Thread t = new Thread(theJob);
+		t.start();
 		System.out.println("back in main");
 	}
 }
