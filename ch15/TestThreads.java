@@ -1,6 +1,23 @@
 // Code magnets exercise
 package ch15;
 
+public class TestThreads {
+
+	public static void main(String[] args) {
+		// Create jobs
+		ThreadOne t1 = new ThreadOne();
+		ThreadTwo t2 = new ThreadTwo();
+
+		// Create threads
+		Thread one = new Thread(t1);
+		Thread two = new Thread(t2);
+
+		// Start threads
+		one.start();
+		two.start();
+	}
+}
+
 class Accum {
 	private static Accum a = new Accum();
 	private int counter = 0;
@@ -18,42 +35,28 @@ class Accum {
 	public int getCount() {
 		return counter;
 	}
+}
 
-	public static void main(String[] args) {
-		// Create jobs
-		ThreadOne t1 = new ThreadOne();
-		ThreadTwo t2 = new ThreadTwo();
+class ThreadOne implements Runnable {
+	Accum a = Accum.getAccum();
 
-		// Create threads
-		Thread one = new Thread(t1);
-		Thread two = new Thread(t2);
-
-		// Start threads
-		one.start();
-		two.start();
-	}
-
-	class ThreadOne implements Runnable {
-		Accum a = Accum.getAccum();
-
-		public void run() {
-			for (int x = 0; x < 98; x++) {
-				a.updateCounter(1000);
-				try {Thread.sleep(50);} catch(InterruptedException ex) {}
-			}
-			System.out.println("one " + a.getCount());
+	public void run() {
+  	for (int x = 0; x < 98; x++) {
+			a.updateCounter(1000);
+			try {Thread.sleep(50);} catch(InterruptedException ex) {}
 		}
+		System.out.println("one " + a.getCount());
 	}
+}
 
-	class ThreadTwo implements Runnable {
-		Accum a = Accum.getAccum();
+class ThreadTwo implements Runnable {
+	Accum a = Accum.getAccum();
 
-		public void run() {
-			for (int x = 0; x < 99; x++) {
-				a.updateCounter(1);
-				try {Thread.sleep(50);} catch (InterruptedException ex) {}
-			}
-			System.out.println("two " + a.getCount());
+	public void run() {
+		for (int x = 0; x < 99; x++) {
+			a.updateCounter(1);
+			try {Thread.sleep(50);} catch (InterruptedException ex) {}
 		}
+		System.out.println("two " + a.getCount());
 	}
 }
